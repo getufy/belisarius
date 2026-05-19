@@ -251,7 +251,8 @@ binary on `$PATH` (via `cargo install belisarius-cli` or `just install-global`),
 add the plugin to Claude Code:
 
 ```sh
-claude plugin install getufy/belisarius
+claude plugin marketplace add getufy/belisarius
+claude plugin install belisarius@belisarius
 ```
 
 That wires up the MCP server, registers an auto-loading `code-intelligence`
