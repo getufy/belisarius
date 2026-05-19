@@ -1,0 +1,27 @@
+{
+  "name": "belisarius",
+  "owner": {
+    "name": "Belisarius contributors",
+    "url": "https://github.com/getufy/belisarius"
+  },
+  "metadata": {
+    "description": "Code intelligence for AI agents — hybrid semantic + BM25 search, SCIP call graphs, hotspots.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "belisarius",
+      "source": {
+        "source": "git",
+        "url": "https://github.com/getufy/belisarius.git"
+      },
+      "description": "Hybrid semantic + BM25 code search, SCIP-backed call graphs, and churn × complexity hotspots — surfaced as slash commands and an auto-loaded skill.",
+      "version": "0.1.0",
+      "category": "code-intelligence",
+      "keywords": ["code-intelligence", "scip", "search", "mcp", "hotspots"],
+      "license": "MIT",
+      "homepage": "https://github.com/getufy/belisarius",
+      "repository": "https://github.com/getufy/belisarius"
+    }
+  ]
+}
