@@ -11,10 +11,7 @@
   "plugins": [
     {
       "name": "belisarius",
-      "source": {
-        "source": "git",
-        "url": "https://github.com/getufy/belisarius.git"
-      },
+      "source": "./",
       "description": "Hybrid semantic + BM25 code search, SCIP-backed call graphs, and churn × complexity hotspots — surfaced as slash commands and an auto-loaded skill.",
       "version": "0.1.0",
       "category": "code-intelligence",
