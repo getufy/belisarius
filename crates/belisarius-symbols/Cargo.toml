@@ -1,0 +1,26 @@
+[package]
+name = "belisarius-symbols"
+description = "SCIP symbol index integration and call-graph traversal for Belisarius."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+thiserror.workspace = true
+prost = "0.13"
+serde.workspace = true
+serde_json.workspace = true
+tracing.workspace = true
+ts-rs = { version = "11", optional = true }
+
+[features]
+# Same pattern as `belisarius-core` / `belisarius-cli`: gate ts-rs codegen
+# behind a feature so the runtime build stays lean.
+ts = ["dep:ts-rs"]
+
+[build-dependencies]
+prost-build = "0.13"
+protox = "0.7"

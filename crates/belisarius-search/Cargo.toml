@@ -1,0 +1,36 @@
+[package]
+name = "belisarius-search"
+description = "Hybrid BM25 + embeddings search (tantivy + fastembed) for Belisarius."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[features]
+# Real embedding model via fastembed (downloads bge-small-en-v1.5 on first run).
+# Off by default so cargo build doesn't pull ~150MB of ONNX runtime + model on
+# contributors who don't need semantic search.
+embed = ["dep:fastembed"]
+default = ["embed"]
+
+[dependencies]
+belisarius-core.workspace = true
+belisarius-scan.workspace = true
+anyhow.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tracing.workspace = true
+ignore.workspace = true
+rusqlite.workspace = true
+blake3.workspace = true
+tantivy.workspace = true
+memmap2.workspace = true
+half.workspace = true
+fastembed = { workspace = true, optional = true }
+once_cell.workspace = true
+notify.workspace = true
+notify-debouncer-mini.workspace = true
+
+[dev-dependencies]
+tempfile = "3"

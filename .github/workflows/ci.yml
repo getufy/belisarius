@@ -1,0 +1,71 @@
+name: ci
+
+# Mirrors `just ci` exactly. Keep this file in sync with the justfile so the
+# local feedback loop and the remote gate produce the same verdict.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: cargo + web + gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-cargo-
+
+      - name: install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: install node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: web/pnpm-lock.yaml
+
+      - name: web deps
+        run: cd web && pnpm install --frozen-lockfile
+
+      - name: install just
+        uses: extractions/setup-just@v2
+
+      # `just ci` runs: fmt-check → clippy → test → build → gate.
+      # The `gate` step is the architectural rules check Belisarius performs
+      # on itself — if a refactor reintroduces dead code, an unwatched
+      # complexity breach, or a forbidden layer dependency, the build fails
+      # here.
+      - name: ci
+        run: just ci
+
+  audit:
+    name: cargo audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: rustsec/audit-check@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,7 @@
+# Resolve TS bindings paths from the workspace root, not the cwd of whichever
+# crate is being tested. `ts-rs` reads this when emitting `.ts` files via the
+# `#[ts(export, export_to = "...")]` attribute on shared types. With this set,
+# the `export_to = "web/src/types/generated/"` paths in `belisarius-core`
+# (and any future ts-annotated crate) all resolve to the same place.
+[env]
+TS_RS_EXPORT_DIR = { value = ".", relative = true }

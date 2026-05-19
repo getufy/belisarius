@@ -1,0 +1,9 @@
+{
+  "name": "belisarius",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --dir web run dev",
+    "build:web": "pnpm --dir web run build",
+    "install:web": "pnpm --dir web install"
+  }
+}

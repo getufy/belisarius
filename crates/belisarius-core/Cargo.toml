@@ -1,0 +1,20 @@
+[package]
+name = "belisarius-core"
+description = "Shared types and data model for the Belisarius code intelligence indexer."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+time.workspace = true
+ts-rs = { version = "11", optional = true }
+
+[features]
+# Emit TypeScript bindings under `web/src/types/generated/` when the
+# `cargo test --features ts` invocation runs the per-struct `#[test]`s
+# `ts-rs` injects. Zero runtime impact when the feature is off.
+ts = ["dep:ts-rs"]

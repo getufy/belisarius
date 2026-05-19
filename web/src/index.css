@@ -1,0 +1,197 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Carbon Design System — applied per design.md.
+   White canvas, charcoal type, IBM Blue as the single accent. Square corners
+   everywhere. Plex Sans body with letter-spacing 0.16px (Carbon precision).
+   ────────────────────────────────────────────────────────────────────────── */
+
+@layer base {
+  html {
+    /* Force light-mode native widgets (select dropdowns, number spinners,
+       scrollbars, date pickers) regardless of the user's OS preference. */
+    color-scheme: light;
+  }
+  html,
+  body {
+    background-color: #ffffff;
+    color: #161616;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    min-height: 100vh;
+    font-family:
+      'IBM Plex Sans',
+      ui-sans-serif,
+      system-ui,
+      sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.16px;
+    line-height: 1.5;
+  }
+  ::selection {
+    background-color: rgba(15, 98, 254, 0.2); /* brand at 20% */
+    color: #161616;
+  }
+  pre,
+  code,
+  kbd,
+  samp {
+    font-family:
+      'IBM Plex Mono',
+      ui-monospace,
+      SFMono-Regular,
+      Menlo,
+      monospace;
+  }
+  pre {
+    @apply text-xs leading-relaxed text-ink-300;
+    letter-spacing: 0;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: #161616;
+    letter-spacing: 0;
+  }
+  /* Light-weight display treatment for true headlines */
+  h1 {
+    font-weight: 300;
+    line-height: 1.2;
+  }
+}
+
+@layer components {
+  /* Feature card — flat tile on canvas with a 1px hairline. No blur, no shadow. */
+  .card {
+    @apply border border-ink-700 bg-white p-4 text-ink-300;
+    border-radius: 0;
+  }
+
+  /* Tertiary button (Carbon): canvas fill, brand text, 1px brand border. */
+  .btn {
+    @apply inline-flex items-center gap-2 border border-ink-700 bg-white text-ink-300 transition;
+    padding: 0.5rem 0.875rem;
+    border-radius: 0;
+    font-size: 0.875rem;
+    line-height: 1.29;
+    letter-spacing: 0.16px;
+  }
+  .btn:hover {
+    @apply border-accent-500 text-accent-500;
+  }
+
+  /* Primary button (Carbon): IBM Blue solid. */
+  .btn-primary {
+    @apply border-accent-500 bg-accent-500 text-white;
+  }
+  .btn-primary:hover {
+    background-color: #0050e6; /* brand-hover */
+    border-color: #0050e6;
+    color: #ffffff;
+  }
+  .btn-primary:active {
+    background-color: #002d9c; /* brand-80 (pressed) */
+    border-color: #002d9c;
+  }
+
+  /* Text input (Carbon): surface-1 fill, bottom-rule, brand underline on focus. */
+  .field {
+    @apply block w-full;
+    background-color: #f4f4f4;
+    color: #161616;
+    border: 1px solid transparent;
+    border-bottom: 1px solid #525252; /* hairline-strong-ish */
+    border-radius: 0;
+    padding: 0.65rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.29;
+    letter-spacing: 0.16px;
+    outline: none;
+    transition: border-color 0.12s ease;
+    /* Native select / number / date widgets inherit dark OS chrome by default;
+       force them to render in light mode. */
+    color-scheme: light;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .field:focus {
+    border-bottom: 2px solid #0f62fe;
+    padding-bottom: calc(0.65rem - 1px); /* keep height stable */
+  }
+  .field::placeholder {
+    color: #8c8c8c;
+  }
+  /* Restore the dropdown caret on <select>s that we just stripped via appearance:none. */
+  select.field {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%23161616' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 12px 12px;
+    padding-right: 2rem;
+  }
+  /* Spinner arrows on number inputs revert to the OS look in dark mode too. Hide them. */
+  input[type='number'].field::-webkit-outer-spin-button,
+  input[type='number'].field::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'].field {
+    -moz-appearance: textfield;
+  }
+
+  /* Eyebrow / label — sentence case at body-sm. Carbon resists all-caps. */
+  .label {
+    @apply mb-1 block text-ink-400;
+    font-size: 0.75rem;
+    line-height: 1.33;
+    letter-spacing: 0.32px;
+  }
+
+  /* Pill / tag — flat square (Carbon does not use rounded pills). */
+  .pill {
+    @apply inline-flex items-center border border-ink-700 bg-white text-ink-400;
+    border-radius: 0;
+    padding: 0.125rem 0.5rem;
+    font-size: 0.75rem;
+    line-height: 1.33;
+    letter-spacing: 0.32px;
+  }
+
+  /* Tiny key-cap. */
+  .kbd {
+    @apply inline-flex items-center border border-ink-700 bg-ink-800 text-ink-400;
+    border-radius: 0;
+    padding: 0.0625rem 0.25rem;
+    font-size: 0.6875rem;
+    line-height: 1;
+    letter-spacing: 0;
+  }
+}
+
+@layer utilities {
+  /* Reusable hover-revealed mini button used in row actions throughout the UI. */
+  .btn-mini {
+    @apply inline-flex items-center border border-ink-700 bg-white px-2 py-0.5 text-[11px] text-ink-400 transition;
+    border-radius: 0;
+  }
+  .btn-mini:hover {
+    @apply border-accent-500 text-accent-500;
+  }
+
+  /* Slim scrollbar for tab strips and panels. */
+  .scrollbar-thin::-webkit-scrollbar {
+    height: 4px;
+    width: 4px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: #c6c6c6;
+    border-radius: 0;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+}
