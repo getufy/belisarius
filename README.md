@@ -244,6 +244,32 @@ echo '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}' \
   | belisarius mcp
 ```
 
+## Claude Code plugin
+
+This repo is also a Claude Code plugin. Once you have the `belisarius`
+binary on `$PATH` (via `cargo install belisarius-cli` or `just install-global`),
+add the plugin to Claude Code:
+
+```sh
+claude plugin install getufy/belisarius
+```
+
+That wires up the MCP server, registers an auto-loading `code-intelligence`
+skill, and exposes a set of slash commands:
+
+| command                       | purpose                                            |
+|-------------------------------|----------------------------------------------------|
+| `/belisarius:brief`           | token-budgeted project summary                     |
+| `/belisarius:find <q>`        | hybrid semantic + BM25 search                      |
+| `/belisarius:hot`             | top churn × complexity hotspots                    |
+| `/belisarius:impact <sym>`    | transitive callers (blast radius)                  |
+| `/belisarius:symbol <sym>`    | def + callers + callees one-shot view              |
+| `/belisarius:tests`           | high-risk source files with no covering test       |
+| `/belisarius:rules`           | run the `.belisarius/rules.toml` architectural gate|
+
+Plugin metadata lives in `.claude-plugin/`, commands in `commands/`, the
+skill in `skills/code-intelligence/`, and the MCP server config in `.mcp.json`.
+
 ## HTTP API
 
 ### Scan + analysis

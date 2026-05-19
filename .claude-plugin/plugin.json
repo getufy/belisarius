@@ -1,0 +1,12 @@
+{
+  "name": "belisarius",
+  "version": "0.1.0",
+  "description": "Hybrid semantic + BM25 code search, SCIP-backed call graphs, and churn × complexity hotspots — surfaced as slash commands and an auto-loaded skill.",
+  "author": {
+    "name": "Belisarius contributors",
+    "url": "https://github.com/getufy/belisarius"
+  },
+  "homepage": "https://github.com/getufy/belisarius",
+  "license": "MIT",
+  "keywords": ["code-intelligence", "scip", "search", "mcp", "hotspots"]
+}
