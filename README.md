@@ -246,30 +246,50 @@ echo '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}' \
 
 ## Claude Code plugin
 
-This repo is also a Claude Code plugin. Once you have the `belisarius`
-binary on `$PATH` (via `cargo install belisarius-cli` or `just install-global`),
-add the plugin to Claude Code:
+Belisarius ships as a Claude Code plugin. Install it in two steps:
+
+**1. Install the binary** (so Claude Code can spawn the MCP server):
+
+```sh
+cargo install --path crates/belisarius-cli --locked
+# or, from this repo: just install-global
+```
+
+**2. Add the marketplace and install the plugin:**
 
 ```sh
 claude plugin marketplace add getufy/belisarius
 claude plugin install belisarius@belisarius
 ```
 
-That wires up the MCP server, registers an auto-loading `code-intelligence`
-skill, and exposes a set of slash commands:
+That's it. Open Claude Code in any project and you get:
 
-| command                       | purpose                                            |
+- The **`belisarius` MCP server**, auto-started over stdio
+- An **auto-loading skill** (`code-intelligence`) that tells the agent when to reach for these tools
+- A set of **slash commands**:
+
+| command                       | what it does                                       |
 |-------------------------------|----------------------------------------------------|
 | `/belisarius:brief`           | token-budgeted project summary                     |
-| `/belisarius:find <q>`        | hybrid semantic + BM25 search                      |
+| `/belisarius:find <q>`        | hybrid semantic + BM25 code search                 |
 | `/belisarius:hot`             | top churn × complexity hotspots                    |
-| `/belisarius:impact <sym>`    | transitive callers (blast radius)                  |
-| `/belisarius:symbol <sym>`    | def + callers + callees one-shot view              |
+| `/belisarius:impact <sym>`    | transitive callers (blast radius of a change)      |
+| `/belisarius:symbol <sym>`    | one-shot def + callers + callees view              |
 | `/belisarius:tests`           | high-risk source files with no covering test       |
 | `/belisarius:rules`           | run the `.belisarius/rules.toml` architectural gate|
 
-Plugin metadata lives in `.claude-plugin/`, commands in `commands/`, the
-skill in `skills/code-intelligence/`, and the MCP server config in `.mcp.json`.
+Verify the install worked:
+
+```sh
+claude plugin list   # belisarius@belisarius - ✔ enabled
+```
+
+To uninstall later: `claude plugin uninstall belisarius@belisarius`.
+
+Plugin internals (for the curious): manifest in `.claude-plugin/plugin.json`,
+marketplace listing in `.claude-plugin/marketplace.json`, slash commands in
+`commands/`, the skill in `skills/code-intelligence/`, and the MCP server
+config in `.mcp.json`.
 
 ## HTTP API
 
