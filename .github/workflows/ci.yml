@@ -13,6 +13,10 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  RUST_BACKTRACE: 1
+  CARGO_TERM_COLOR: always
+
 jobs:
   verify:
     name: cargo + web + gate
@@ -53,17 +57,35 @@ jobs:
       - name: install just
         uses: extractions/setup-just@v2
 
-      # `just ci` runs: fmt-check → clippy → test → build → gate.
-      # The `gate` step is the architectural rules check Belisarius performs
-      # on itself — if a refactor reintroduces dead code, an unwatched
-      # complexity breach, or a forbidden layer dependency, the build fails
-      # here.
-      - name: ci
-        run: just ci
+      # Split `just ci` into discrete steps so a failure names the offender.
+      # Keep these in sync with the recipe — every step here mirrors a line in
+      # the `ci` target in /justfile.
+      - name: fmt-check
+        run: just fmt-check
+
+      - name: clippy
+        run: just clippy
+
+      - name: test
+        run: just test
+
+      - name: build
+        run: just build
+
+      # Architectural rules self-check using the binary we just built.
+      - name: gate
+        run: just gate
 
   audit:
     name: cargo audit
     runs-on: ubuntu-latest
+    # rustsec/audit-check posts a check-run with the advisory report. The
+    # default GITHUB_TOKEN is read-only on new repos; grant the writes the
+    # action needs.
+    permissions:
+      contents: read
+      checks: write
+      issues: write
     steps:
       - uses: actions/checkout@v4
       - uses: rustsec/audit-check@v2
