@@ -1,0 +1,39 @@
+# Belisarius architectural rules — checked by `belisarius_rules_check` and
+# the /api/rules endpoint. Edit to match the layering you want enforced.
+
+[layers]
+core = ["crates/belisarius-core/**"]
+scan = ["crates/belisarius-scan/**"]
+symbols = ["crates/belisarius-symbols/**"]
+cli = ["crates/belisarius-cli/**"]
+web = ["web/**"]
+
+# Core may not depend on its callers.
+[[layer_forbid]]
+from = "core"
+to = "scan"
+reason = "core types must stay pure data — no engine imports"
+
+[[layer_forbid]]
+from = "core"
+to = "cli"
+reason = "core types must stay pure data — no transport imports"
+
+[[layer_forbid]]
+from = "scan"
+to = "cli"
+reason = "scan engines must not reach into the CLI / server layer"
+
+# Per-area complexity caps. Tightest on the data layer.
+[[complexity_cap]]
+glob = "crates/belisarius-core/**"
+max_cyclomatic = 12
+max_cognitive = 20
+
+[[complexity_cap]]
+glob = "crates/belisarius-scan/**"
+max_cyclomatic = 30
+max_cognitive = 50
+
+[dead_code]
+max_files = 5
