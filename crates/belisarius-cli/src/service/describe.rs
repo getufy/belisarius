@@ -69,7 +69,7 @@ async fn describe_file(
         .iter()
         .filter(|f| f.file == rel_path)
         .collect();
-    functions.sort_by(|a, b| b.cyclomatic.cmp(&a.cyclomatic));
+    functions.sort_by_key(|x| std::cmp::Reverse(x.cyclomatic));
     let top_functions: Vec<Value> = functions
         .iter()
         .take(10)
@@ -142,7 +142,7 @@ async fn describe_dir(
         .iter()
         .filter(|f| f.path.starts_with(&prefix))
         .collect();
-    files_in_dir.sort_by(|a, b| b.loc.cmp(&a.loc));
+    files_in_dir.sort_by_key(|x| std::cmp::Reverse(x.loc));
 
     // Language mix.
     let mut lang_counts: std::collections::BTreeMap<&str, u32> = std::collections::BTreeMap::new();
@@ -156,7 +156,7 @@ async fn describe_dir(
         .iter()
         .filter(|m| m.path.starts_with(&prefix))
         .collect();
-    hot_files.sort_by(|a, b| b.total_cyclomatic.cmp(&a.total_cyclomatic));
+    hot_files.sort_by_key(|x| std::cmp::Reverse(x.total_cyclomatic));
     let top_complex: Vec<Value> = hot_files
         .iter()
         .take(5)

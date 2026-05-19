@@ -58,7 +58,7 @@ pub fn compose(
 
     // Language mix — top 4.
     let mut langs: Vec<_> = report.scan.language_summary.iter().collect();
-    langs.sort_by(|a, b| b.1.loc.cmp(&a.1.loc));
+    langs.sort_by_key(|x| std::cmp::Reverse(x.1.loc));
     if langs.len() > 1 {
         let parts: Vec<String> = langs
             .iter()

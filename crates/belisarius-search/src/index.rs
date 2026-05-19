@@ -218,7 +218,7 @@ impl IndexHandle {
             };
             // BM25: delete-by-file then add fresh.
             self.bm25.delete_for_file(&mut writer, &f.path)?;
-            for (id, c) in ids.iter().zip(chunks.into_iter()) {
+            for (id, c) in ids.iter().zip(chunks) {
                 self.bm25.add(&mut writer, *id, &c)?;
                 batch.push((*id, c));
             }
@@ -254,7 +254,7 @@ impl IndexHandle {
             let vecs = p
                 .embed(&texts)
                 .map_err(|e| anyhow::anyhow!("embed batch: {e}"))?;
-            for ((id, _), v) in batch.iter().zip(vecs.into_iter()) {
+            for ((id, _), v) in batch.iter().zip(vecs) {
                 vec_writer.write_vector(*id, &v)?;
                 let mut s = self.store.lock().expect("store mutex");
                 s.mark_has_vector(*id)?;

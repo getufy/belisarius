@@ -142,7 +142,7 @@ pub fn render(project: &Path) -> Result<String> {
         .iter()
         .map(|(k, s)| (k, s.loc as u64))
         .collect();
-    langs.sort_by(|a, b| b.1.cmp(&a.1));
+    langs.sort_by_key(|x| std::cmp::Reverse(x.1));
 
     let project_name = project
         .file_name()

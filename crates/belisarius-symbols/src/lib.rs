@@ -199,7 +199,7 @@ impl SymbolStore {
             .iter()
             .map(|(k, refs)| (k.clone(), refs.len()))
             .collect();
-        v.sort_by(|a, b| b.1.cmp(&a.1));
+        v.sort_by_key(|x| std::cmp::Reverse(x.1));
         v.truncate(n);
         v
     }
@@ -269,7 +269,7 @@ impl SymbolStore {
                 call_sites: sites,
             })
             .collect();
-        out.sort_by(|a, b| b.call_sites.len().cmp(&a.call_sites.len()));
+        out.sort_by_key(|x| std::cmp::Reverse(x.call_sites.len()));
         out
     }
 
@@ -292,7 +292,7 @@ impl SymbolStore {
                 occurrences: refs.len(),
             });
         }
-        hits.sort_by(|a, b| b.occurrences.cmp(&a.occurrences));
+        hits.sort_by_key(|x| std::cmp::Reverse(x.occurrences));
         hits.truncate(limit);
         hits
     }

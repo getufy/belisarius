@@ -162,7 +162,7 @@ pub fn index_registry(handle: &Arc<IndexHandle>) -> Result<usize> {
             if let Some(p) = &provider {
                 let texts: Vec<String> = chunks.iter().map(|c| c.content.clone()).collect();
                 if let Ok(vecs) = p.embed(&texts) {
-                    for (id, v) in ids.iter().zip(vecs.into_iter()) {
+                    for (id, v) in ids.iter().zip(vecs) {
                         vw.write_vector(*id, &v)?;
                         let mut s = handle.store.lock().expect("store mutex");
                         s.mark_has_vector(*id)?;

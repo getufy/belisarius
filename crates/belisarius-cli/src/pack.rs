@@ -122,7 +122,7 @@ pub fn compose(
     match focus {
         Focus::None | Focus::Hot => {
             let mut fns = report.functions.iter().collect::<Vec<_>>();
-            fns.sort_by(|a, b| b.cyclomatic.cmp(&a.cyclomatic));
+            fns.sort_by_key(|x| std::cmp::Reverse(x.cyclomatic));
             for f in fns.iter().take(10) {
                 detail_targets.push((f.file.clone(), f.name.clone()));
             }
@@ -133,7 +133,7 @@ pub fn compose(
                 .iter()
                 .filter(|f| gap_files.contains(f.file.as_str()))
                 .collect();
-            fns.sort_by(|a, b| b.cyclomatic.cmp(&a.cyclomatic));
+            fns.sort_by_key(|x| std::cmp::Reverse(x.cyclomatic));
             for f in fns.iter().take(10) {
                 detail_targets.push((f.file.clone(), f.name.clone()));
             }
@@ -144,7 +144,7 @@ pub fn compose(
                 .iter()
                 .filter(|f| hot_files.contains(&f.file))
                 .collect();
-            fns.sort_by(|a, b| b.cyclomatic.cmp(&a.cyclomatic));
+            fns.sort_by_key(|x| std::cmp::Reverse(x.cyclomatic));
             for f in fns.iter().take(10) {
                 detail_targets.push((f.file.clone(), f.name.clone()));
             }

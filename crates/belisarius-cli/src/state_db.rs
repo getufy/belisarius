@@ -158,7 +158,7 @@ pub fn write_snapshot(conn: &Connection, report: &AnalysisReport) -> Result<i64>
         .iter()
         .filter(|f| f.cyclomatic >= 8)
         .collect();
-    fns.sort_by(|a, b| b.cyclomatic.cmp(&a.cyclomatic));
+    fns.sort_by_key(|x| std::cmp::Reverse(x.cyclomatic));
     fns.truncate(50);
     let fingerprints: Vec<HotFunctionFingerprint> = fns
         .iter()
